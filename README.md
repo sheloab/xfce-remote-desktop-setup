@@ -19,7 +19,13 @@ tested specifically against Debian 13.
    `network-manager-gnome`, `pulseaudio`, `pavucontrol`, `xrdp`, `xorgxrdp`
 3. Sets the system to boot into graphical mode by default
    (`systemctl set-default graphical.target`) and enables `lightdm`
-4. Enables and starts `xrdp` so the box is reachable over RDP immediately
+4. Installs an xrdp reconnect hook (`/etc/xrdp/reconnectwm.sh`, the original
+   is kept as `reconnectwm.sh.orig`). xrdp starts its channel helper
+   (`xrdp-chansrv`: clipboard, drives, sound) only for a new session, so if
+   it dies every later reconnect has no clipboard. The hook restarts it when
+   nothing is listening on its socket and logs that to syslog
+   (tag `xrdp-reconnect`).
+5. Enables and starts `xrdp` so the box is reachable over RDP immediately
 
 ## Usage
 
